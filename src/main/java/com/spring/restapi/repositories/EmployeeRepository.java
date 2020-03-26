@@ -1,11 +1,11 @@
-package com.spring.restapi.interfaces;
+package com.spring.restapi.repositories;
 
 import com.spring.restapi.entities.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface EmployeeInterface {
-    List<Employee> getAll();
-
-    Employee findById(Long id);
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+    Employee findByName(String name);
+    Employee findOneById(Long id);
 }

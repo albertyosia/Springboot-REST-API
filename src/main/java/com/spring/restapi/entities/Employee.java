@@ -1,22 +1,26 @@
 package com.spring.restapi.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Employee {
+@Table(name = "employee")
+public class Employee{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "employee_name")
     private String name;
 
+    @Column(name = "employee_email")
     private String email;
 
+    @Column(name = "employee_address")
     private String address;
+
+    public Employee() {
+    }
 
     public Long getId() {
         return id;
