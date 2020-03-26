@@ -1,21 +1,23 @@
 package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
-import com.spring.restapi.exceptions.UsernameNotFoundException;
 import com.spring.restapi.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Override
+
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }

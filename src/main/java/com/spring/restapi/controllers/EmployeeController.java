@@ -2,7 +2,7 @@ package com.spring.restapi.controllers;
 
 import com.spring.restapi.entities.Employee;
 import com.spring.restapi.services.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.restapi.services.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,8 +11,7 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
+    public EmployeeService employeeService;
 
     @GetMapping("/")
     public List<Employee> getAllEmployees(){
