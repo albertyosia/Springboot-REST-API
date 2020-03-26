@@ -7,16 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
-@Transactional
+@Service("employeeService")
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -28,22 +25,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Employee employee) {
-        Employee foundEmployee = employeeRepository.findByName(employee.getName());
-        Employee employeeToUpdate = new Employee();
+    public Employee updateEmployee(Employee currEmployee, Employee employee) {
+        Employee foundEmployee = employeeRepository.findOneById(employee.getId());
         if(foundEmployee == null){
             HttpStatus.BAD_REQUEST.value();
         }
         if(!StringUtils.isEmpty(employee.getName())){
-            employeeToUpdate.setName(employee.getName());
+            currEmployee.setName(employee.getName());
         }
         if(!StringUtils.isEmpty(employee.getEmail())){
-            employeeToUpdate.setEmail(employee.getEmail());
+            currEmployee.setEmail(employee.getEmail());
         }
         if(!StringUtils.isEmpty(employee.getAddress())){
-            employeeToUpdate.setAddress(employee.getAddress());
+            currEmployee.setAddress(employee.getAddress());
         }
-        return employeeRepository.save(employeeToUpdate);
+        return employeeRepository.save(currEmployee);
     }
 
     @Override

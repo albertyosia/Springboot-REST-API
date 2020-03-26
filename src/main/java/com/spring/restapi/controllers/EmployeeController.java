@@ -3,6 +3,7 @@ package com.spring.restapi.controllers;
 import com.spring.restapi.entities.Employee;
 import com.spring.restapi.services.EmployeeService;
 import com.spring.restapi.services.EmployeeServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    public EmployeeService employeeService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/")
     public List<Employee> getAllEmployees(){
@@ -23,12 +25,12 @@ public class EmployeeController {
         return employeeService.addEmployee(employee);
     }
 
-    @PutMapping("/update/{id}")
-    public Employee updateEmployee(@PathVariable Employee employee){
-        return employeeService.updateEmployee(employee);
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable("id") Employee currEmployee, @RequestBody Employee employee){
+        return employeeService.updateEmployee(currEmployee, employee);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable("id") Employee employee) {
          employeeService.deleteEmployee(employee);
     }
