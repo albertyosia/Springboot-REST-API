@@ -2,7 +2,6 @@ package com.spring.restapi.controllers;
 
 import com.spring.restapi.entities.Employee;
 import com.spring.restapi.services.EmployeeService;
-import com.spring.restapi.services.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

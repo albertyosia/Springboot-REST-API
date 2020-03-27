@@ -2,18 +2,22 @@ package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
 import com.spring.restapi.repositories.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("employeeService")
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
+
     private EmployeeRepository employeeRepository;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -25,10 +29,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Employee currEmployee, Employee employee) {
-        Employee foundEmployee = employeeRepository.findOneById(employee.getId());
-        if(foundEmployee == null){
-            HttpStatus.BAD_REQUEST.value();
+    public Employee updateEmployee(Employee currEmployee, Employee employee){
+        Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+        if(!foundEmployee.isPresent()){
+            throw new IllegalArgumentException("Employee Id not found");
         }
         if(!StringUtils.isEmpty(employee.getName())){
             currEmployee.setName(employee.getName());
@@ -44,10 +48,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteEmployee(Employee employee) {
-        Employee foundEmployee = employeeRepository.findOneById(employee.getId());
-        if(foundEmployee == null){
-            HttpStatus.BAD_REQUEST.value();
+        Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+        if(!foundEmployee.isPresent()){
+            throw new IllegalArgumentException("Employee Id not found");
         }
-        employeeRepository.delete(foundEmployee);
+        employeeRepository.delete(employee);
     }
 }
