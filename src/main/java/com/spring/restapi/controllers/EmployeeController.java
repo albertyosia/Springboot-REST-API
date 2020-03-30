@@ -1,6 +1,7 @@
 package com.spring.restapi.controllers;
 
 import com.spring.restapi.entities.Employee;
+import com.spring.restapi.exceptions.UsernameNotFound;
 import com.spring.restapi.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable("id") Employee employee) {
+    public void deleteEmployee(@PathVariable("id") Employee employee) throws UsernameNotFound {
          employeeService.deleteEmployee(employee);
     }
 }

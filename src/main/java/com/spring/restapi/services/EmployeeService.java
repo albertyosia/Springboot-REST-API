@@ -1,8 +1,10 @@
 package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
+import com.spring.restapi.exceptions.UsernameNotFound;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeService {
 
@@ -12,6 +14,6 @@ public interface EmployeeService {
 
     Employee updateEmployee(Employee currEmployee, Employee employee);
 
-    void deleteEmployee(Employee employee);
+    Optional<Employee> deleteEmployee(Employee employee);
 
 }

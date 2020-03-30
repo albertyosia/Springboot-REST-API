@@ -1,6 +1,7 @@
 package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
+import com.spring.restapi.exceptions.UsernameNotFound;
 import com.spring.restapi.repositories.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(Employee employee) {
+    public Optional<Employee> deleteEmployee(Employee employee){
         Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
         if(!foundEmployee.isPresent()){
             throw new IllegalArgumentException("Employee Id not found");
         }
-        employeeRepository.delete(employee);
+
+        return employeeRepository.deleteById(foundEmployee);
     }
 }
