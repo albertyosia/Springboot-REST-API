@@ -10,6 +10,6 @@ public interface EmployeeService {
 
   Employee updateEmployee(Employee currentEmployee, Employee employee);
 
-  void deleteEmployee(Employee employee);
+  void deleteEmployeeById(Long id);
 
 }

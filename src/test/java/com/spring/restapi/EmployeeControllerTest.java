@@ -37,6 +37,8 @@ public class EmployeeControllerTest {
         employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
         employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
         when(employeeService.getAllEmployees()).thenReturn(employeeList);
+
+        Assert.assertEquals(2, employeeList.size());
     }
 
     @Test
@@ -52,9 +54,17 @@ public class EmployeeControllerTest {
     @Test
     void updateEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
-        Employee currEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
-        when(employeeService.updateEmployee(currEmployee, expectedEmployee)).thenReturn(currEmployee);
+        Employee currentEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
+        when(employeeService.updateEmployee(currentEmployee, expectedEmployee)).thenReturn(expectedEmployee);
 
-        Assert.assertEquals(expectedEmployee.getName(), currEmployee.getName());
+        Employee actualEmployee = employeeService.updateEmployee(currentEmployee, expectedEmployee);
+
+        Assert.assertEquals(expectedEmployee.getName(), actualEmployee.getName());
+    }
+
+    @Test
+    void deleteEmployee()throws Exception {
+        Employee expectedEmployee = generateEmployee();
+        when(employeeService.deleteEmployee(expectedEmployee.getId())).thenReturn(expectedEmployee.getId());
     }
 }

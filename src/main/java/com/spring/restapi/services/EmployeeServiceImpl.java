@@ -25,29 +25,29 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Employee updateEmployee(Employee currEmployee, Employee employee) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+  public Employee updateEmployee(Employee currentEmployee, Employee employee) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(currentEmployee.getId());
     if (foundEmployee.isEmpty()) {
       throw new IllegalArgumentException("Employee Id not found");
     }
     if (!StringUtils.isEmpty(employee.getName())) {
-      currEmployee.setName(employee.getName());
+      currentEmployee.setName(employee.getName());
     }
     if (!StringUtils.isEmpty(employee.getEmail())) {
-      currEmployee.setEmail(employee.getEmail());
+      currentEmployee.setEmail(employee.getEmail());
     }
     if (!StringUtils.isEmpty(employee.getAddress())) {
-      currEmployee.setAddress(employee.getAddress());
+      currentEmployee.setAddress(employee.getAddress());
     }
-    return employeeRepository.save(currEmployee);
+    return employeeRepository.save(currentEmployee);
   }
 
   @Override
-  public void deleteEmployee(Employee employee) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
-    if(foundEmployee.isEmpty()){
+  public void deleteEmployeeById(Long id) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(id);
+    if (foundEmployee.isEmpty()) {
       throw  new IllegalArgumentException("Employee id not found");
     }
-    employeeRepository.delete(employee);
+    employeeRepository.deleteById(id);
   }
 }
