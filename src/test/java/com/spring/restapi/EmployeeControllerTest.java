@@ -5,6 +5,7 @@ import com.spring.restapi.services.EmployeeService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.rules.Verifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +32,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void getAllEmployees()throws Exception{
+    void getAllEmployees()throws Exception {
         List<Employee> employeeList = new ArrayList<Employee>();
         employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
         employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
@@ -39,7 +40,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void createNewEmployee()throws Exception{
+    void createNewEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
         when(employeeService.addEmployee(expectedEmployee)).thenReturn(expectedEmployee);
 
@@ -49,11 +50,11 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void updateEmployee()throws Exception{
-        Employee updatedEmployee = generateEmployee();
+    void updateEmployee()throws Exception {
+        Employee expectedEmployee = generateEmployee();
         Employee currEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
-        when(employeeService.updateEmployee(currEmployee, updatedEmployee)).thenReturn(currEmployee);
+        when(employeeService.updateEmployee(currEmployee, expectedEmployee)).thenReturn(currEmployee);
 
-        Assert.assertEquals(currEmployee, updatedEmployee);
+        Assert.assertEquals(expectedEmployee.getName(), currEmployee.getName());
     }
 }

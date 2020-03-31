@@ -1,59 +1,53 @@
 package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
-import com.spring.restapi.exceptions.UsernameNotFound;
 import com.spring.restapi.repositories.EmployeeRepository;
-import org.springframework.http.HttpStatus;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service("employeeService")
 public class EmployeeServiceImpl implements EmployeeService {
+  private EmployeeRepository employeeRepository;
 
+  public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    this.employeeRepository = employeeRepository;
+  }
 
-    private EmployeeRepository employeeRepository;
+  public List<Employee> getAllEmployees() {
+    return employeeRepository.findAll();
+  }
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+  @Override
+  public Employee addEmployee(Employee newEmployee) {
+    return employeeRepository.save(newEmployee);
+  }
+
+  @Override
+  public Employee updateEmployee(Employee currEmployee, Employee employee) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+    if (foundEmployee.isEmpty()) {
+      throw new IllegalArgumentException("Employee Id not found");
     }
-
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    if (!StringUtils.isEmpty(employee.getName())) {
+      currEmployee.setName(employee.getName());
     }
-
-    @Override
-    public Employee addEmployee(Employee newEmployee) {
-        return employeeRepository.save(newEmployee);
+    if (!StringUtils.isEmpty(employee.getEmail())) {
+      currEmployee.setEmail(employee.getEmail());
     }
-
-    @Override
-    public Employee updateEmployee(Employee currEmployee, Employee employee){
-        Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
-        if(!foundEmployee.isPresent()){
-            throw new IllegalArgumentException("Employee Id not found");
-        }
-        if(!StringUtils.isEmpty(employee.getName())){
-            currEmployee.setName(employee.getName());
-        }
-        if(!StringUtils.isEmpty(employee.getEmail())){
-            currEmployee.setEmail(employee.getEmail());
-        }
-        if(!StringUtils.isEmpty(employee.getAddress())){
-            currEmployee.setAddress(employee.getAddress());
-        }
-        return employeeRepository.save(currEmployee);
+    if (!StringUtils.isEmpty(employee.getAddress())) {
+      currEmployee.setAddress(employee.getAddress());
     }
+    return employeeRepository.save(currEmployee);
+  }
 
-    @Override
-    public Optional<Employee> deleteEmployee(Employee employee){
-        Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
-        if(!foundEmployee.isPresent()){
-            throw new IllegalArgumentException("Employee Id not found");
-        }
-
-        return employeeRepository.deleteById(foundEmployee);
+  @Override
+  public void deleteEmployee(Employee employee) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+    if(foundEmployee.isEmpty()){
+      throw  new IllegalArgumentException("Employee id not found");
     }
+    employeeRepository.delete(employee);
+  }
 }
