@@ -18,6 +18,13 @@ public class Employee {
   private @Column(name = "employee_email") String email;
   private @Column(name = "employee_address") String address;
 
+  /**
+   * This is constructor.
+   * @param id This is employee id
+   * @param name This is employee name.
+   * @param email This is employee email.
+   * @param address This is employee address.
+   */
   public Employee(Long id, String name, String email, String address) {
     this.id = id;
     this.name = name;

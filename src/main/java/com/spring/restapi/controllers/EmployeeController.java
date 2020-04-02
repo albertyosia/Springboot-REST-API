@@ -18,24 +18,43 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmployeeController {
   @Autowired private EmployeeService employeeService;
 
+  /**
+   * This method is used to return all employee from database.
+   * @return list of employee
+   */
   @GetMapping("/")
   public List<Employee> getAllEmployees() {
     return employeeService.getAllEmployees();
   }
 
+  /**
+   * This method is used to add new employee to database.
+   * @param employee This is employee from request.
+   * @return employee object.
+   */
   @PostMapping("/")
   public Employee registerEmployee(@RequestBody Employee employee) {
     return employeeService.addEmployee(employee);
   }
 
+  /**
+   * This method is used to update current employee.
+   * @param currEmployee This is employee to be updated.
+   * @param employee This is employee from request.
+   * @return return updated current employee object.
+   */
   @PutMapping("/{id}")
   public Employee updateEmployee(@PathVariable("id") Employee currEmployee,
                                  @RequestBody Employee employee) {
     return employeeService.updateEmployee(currEmployee, employee);
   }
 
+  /**
+   * This method is used to delete employee.
+   * @param employee This is employee to be deleted.
+   */
   @DeleteMapping("/{id}")
   public void deleteEmployee(@PathVariable("id") Employee employee) {
-    employeeService.deleteEmployee(employee.getId());
+    employeeService.deleteEmployee(employee);
   }
 }

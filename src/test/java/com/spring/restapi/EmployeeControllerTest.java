@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.Verifier;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,17 +15,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
 public class EmployeeControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
 
-    @MockBean
-    private EmployeeService employeeService;
+    @MockBean private EmployeeService employeeService;
 
     private Employee generateEmployee(){
         Employee newEmployee = new Employee(1L,"albert", "albert@example","Jl.Aren");
@@ -64,7 +63,11 @@ public class EmployeeControllerTest {
 
     @Test
     void deleteEmployee()throws Exception {
-        Employee expectedEmployee = generateEmployee();
-        when(employeeService.deleteEmployee(expectedEmployee.getId())).thenReturn(expectedEmployee.getId());
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
+        employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
+
+        employeeService.deleteEmployee(employeeList.get(1));
+        verify(employeeService, atLeast(1)).deleteEmployee(employeeList.get(1));
     }
 }
