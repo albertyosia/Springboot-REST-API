@@ -2,6 +2,7 @@ package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
 import com.spring.restapi.exceptions.UsernameNotFoundException;
+import com.spring.restapi.models.EmployeesReturnModel;
 import com.spring.restapi.repositories.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,6 @@ import org.springframework.util.StringUtils;
 public class EmployeeServiceImpl implements EmployeeService {
   private EmployeeRepository employeeRepository;
 
-
   public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
     this.employeeRepository = employeeRepository;
   }
@@ -21,8 +21,13 @@ public class EmployeeServiceImpl implements EmployeeService {
    * This method is used to return all employee from database.
    * @return list of employee.
    */
-  public List<Employee> getAllEmployees() {
-    return employeeRepository.findAll();
+  public EmployeesReturnModel getAllEmployees() {
+    List<Employee> employeeList = employeeRepository.findAll();
+    EmployeesReturnModel model = new EmployeesReturnModel();
+    model.setCode(700);
+    model.setStatus("success");
+    model.setData(employeeList);
+    return model;
   }
 
   /**
@@ -37,38 +42,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   /**
    * This method is used to update current employee.
-   * @param currentEmployee This is employee to be updated.
+   * @param id This is employee id to be updated.
    * @param employee This is employee from request.
    * @return employee object.
    */
   @Override
-  public Employee updateEmployee(Employee currentEmployee, Employee employee) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(currentEmployee.getId());
+  public Employee updateEmployee(Long id, Employee employee) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(id);
     if (foundEmployee.isEmpty()) {
       throw new UsernameNotFoundException("Employee Id not found");
     }
     if (!StringUtils.isEmpty(employee.getName())) {
-      currentEmployee.setName(employee.getName());
+      foundEmployee.get().setName((employee.getName()));
     }
     if (!StringUtils.isEmpty(employee.getEmail())) {
-      currentEmployee.setEmail(employee.getEmail());
+      foundEmployee.get().setEmail(employee.getEmail());
     }
     if (!StringUtils.isEmpty(employee.getAddress())) {
-      currentEmployee.setAddress(employee.getAddress());
+      foundEmployee.get().setAddress(employee.getAddress());
     }
-    return employeeRepository.save(currentEmployee);
+    return employeeRepository.save(foundEmployee.get());
   }
 
   /**
    * This method is used to delete employee.
-   * @param employee This is employee to be deleted.
+   * @param id This is employee id to be deleted.
    */
   @Override
-  public void deleteEmployee(Employee employee) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(employee.getId());
+  public void deleteEmployee(Long id) {
+    Optional<Employee> foundEmployee = employeeRepository.findOneById(id);
     if (foundEmployee.isEmpty()) {
-      throw  new UsernameNotFoundException("Employee id not found");
+      throw  new UsernameNotFoundException("Employee with id " + id + " not found");
     }
-    employeeRepository.delete(employee);
+    employeeRepository.delete(foundEmployee.get());
   }
 }

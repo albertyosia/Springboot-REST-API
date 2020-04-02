@@ -1,8 +1,8 @@
 package com.spring.restapi.controllers;
 
 import com.spring.restapi.entities.Employee;
+import com.spring.restapi.models.EmployeesReturnModel;
 import com.spring.restapi.services.EmployeeService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class EmployeeController {
    * @return list of employee
    */
   @GetMapping("/")
-  public List<Employee> getAllEmployees() {
+  public EmployeesReturnModel getAllEmployees() {
     return employeeService.getAllEmployees();
   }
 
@@ -39,22 +39,22 @@ public class EmployeeController {
 
   /**
    * This method is used to update current employee.
-   * @param currEmployee This is employee to be updated.
+   * @param id This is employee id to be updated.
    * @param employee This is employee from request.
    * @return return updated current employee object.
    */
   @PutMapping("/{id}")
-  public Employee updateEmployee(@PathVariable("id") Employee currEmployee,
+  public Employee updateEmployee(@PathVariable("id") Long id,
                                  @RequestBody Employee employee) {
-    return employeeService.updateEmployee(currEmployee, employee);
+    return employeeService.updateEmployee(id, employee);
   }
 
   /**
    * This method is used to delete employee.
-   * @param employee This is employee to be deleted.
+   * @param id This is employee id to be deleted.
    */
   @DeleteMapping("/{id}")
-  public void deleteEmployee(@PathVariable("id") Employee employee) {
-    employeeService.deleteEmployee(employee);
+  public void deleteEmployee(@PathVariable("id") Long id) {
+    employeeService.deleteEmployee(id);
   }
 }

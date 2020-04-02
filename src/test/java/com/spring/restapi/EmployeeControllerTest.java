@@ -1,12 +1,11 @@
 package com.spring.restapi;
 
 import com.spring.restapi.entities.Employee;
+import com.spring.restapi.models.EmployeesReturnModel;
 import com.spring.restapi.services.EmployeeService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.Verifier;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,7 +34,7 @@ public class EmployeeControllerTest {
         List<Employee> employeeList = new ArrayList<Employee>();
         employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
         employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
-        when(employeeService.getAllEmployees()).thenReturn(employeeList);
+        when(employeeService.getAllEmployees()).thenReturn((EmployeesReturnModel) employeeList);
 
         Assert.assertEquals(2, employeeList.size());
     }
@@ -54,20 +53,19 @@ public class EmployeeControllerTest {
     void updateEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
         Employee currentEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
-        when(employeeService.updateEmployee(currentEmployee, expectedEmployee)).thenReturn(expectedEmployee);
+        when(employeeService.updateEmployee(2L, expectedEmployee)).thenReturn(expectedEmployee);
 
-        Employee actualEmployee = employeeService.updateEmployee(currentEmployee, expectedEmployee);
+        Employee actualEmployee = employeeService.updateEmployee(2L, expectedEmployee);
 
         Assert.assertEquals(expectedEmployee.getName(), actualEmployee.getName());
     }
 
     @Test
     void deleteEmployee()throws Exception {
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
-        employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
+        Employee currentEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
 
-        employeeService.deleteEmployee(employeeList.get(1));
-        verify(employeeService, atLeast(1)).deleteEmployee(employeeList.get(1));
+        employeeService.deleteEmployee(2L);
+        verify(employeeService, atLeast(1)).deleteEmployee(2L);
     }
+
 }

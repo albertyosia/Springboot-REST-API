@@ -1,15 +1,14 @@
 package com.spring.restapi.services;
 
 import com.spring.restapi.entities.Employee;
-import java.util.List;
+import com.spring.restapi.models.EmployeesReturnModel;
 
 public interface EmployeeService {
-  List<Employee> getAllEmployees();
+  EmployeesReturnModel getAllEmployees();
 
   Employee addEmployee(Employee employee);
 
-  Employee updateEmployee(Employee currentEmployee, Employee employee);
+  Employee updateEmployee(Long id, Employee employee);
 
-  void deleteEmployee(Employee employee);
-
+  void deleteEmployee(Long id);
 }
