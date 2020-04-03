@@ -1,8 +1,8 @@
 package com.spring.restapi;
 
-import com.spring.restapi.entities.Employee;
-import com.spring.restapi.models.EmployeesReturnModel;
-import com.spring.restapi.services.EmployeeService;
+import com.spring.restapi.module.employee.Employee;
+import com.spring.restapi.models.SuccessResponseModel;
+import com.spring.restapi.module.employee.EmployeeService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,22 +25,28 @@ public class EmployeeControllerTest {
     @MockBean private EmployeeService employeeService;
 
     private Employee generateEmployee(){
-        Employee newEmployee = new Employee(1L,"albert", "albert@example","Jl.Aren");
+        Long id = 1L;
+        Employee newEmployee = new Employee(id,"albert", "albert@example","Jl.Aren");
         return newEmployee;
     }
 
     @Test
-    void getAllEmployees()throws Exception {
-        List<Employee> employeeList = new ArrayList<Employee>();
-        employeeList.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
-        employeeList.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
-        when(employeeService.getAllEmployees()).thenReturn((EmployeesReturnModel) employeeList);
+    void testGetAllEmployees()throws Exception {
+        List<Employee> employees = new ArrayList<Employee>();
+        employees.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
+        employees.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
 
-        Assert.assertEquals(2, employeeList.size());
+        SuccessResponseModel model = new SuccessResponseModel();
+        model.setCode(RestStatus.SUCCESS.getCode());
+        model.setStatus(RestStatus.SUCCESS.getMessage());
+        model.setData(employees);
+        when(employeeService.getAllEmployees()).thenReturn(model);
+
+        Assert.assertEquals(2, employees.size());
     }
 
     @Test
-    void createNewEmployee()throws Exception {
+    void testCreateNewEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
         when(employeeService.addEmployee(expectedEmployee)).thenReturn(expectedEmployee);
 
@@ -50,22 +56,21 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void updateEmployee()throws Exception {
+    void testUpdateEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
-        Employee currentEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
-        when(employeeService.updateEmployee(2L, expectedEmployee)).thenReturn(expectedEmployee);
+        Long idToUpdate = 2L;
+        when(employeeService.updateEmployee(idToUpdate, expectedEmployee)).thenReturn(expectedEmployee);
 
-        Employee actualEmployee = employeeService.updateEmployee(2L, expectedEmployee);
+        Employee actualEmployee = employeeService.updateEmployee(idToUpdate, expectedEmployee);
 
-        Assert.assertEquals(expectedEmployee.getName(), actualEmployee.getName());
+        Assert.assertEquals(expectedEmployee.getEmployeeName(), actualEmployee.getEmployeeName());
     }
 
     @Test
-    void deleteEmployee()throws Exception {
-        Employee currentEmployee = new Employee(2L, "employee1", "example@Example", "Jl.XYZ");
+    void testDeleteEmployee()throws Exception {
+        Long idToDelete = 2L;
 
-        employeeService.deleteEmployee(2L);
-        verify(employeeService, atLeast(1)).deleteEmployee(2L);
+        employeeService.deleteEmployee(idToDelete);
+        verify(employeeService, atLeast(1)).deleteEmployee(idToDelete);
     }
-
 }

@@ -1,6 +1,5 @@
-package com.spring.restapi.repositories;
+package com.spring.restapi.module.employee;
 
-import com.spring.restapi.entities.Employee;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,8 +1,6 @@
-package com.spring.restapi.controllers;
+package com.spring.restapi.module.employee;
 
-import com.spring.restapi.entities.Employee;
-import com.spring.restapi.models.EmployeesReturnModel;
-import com.spring.restapi.services.EmployeeService;
+import com.spring.restapi.models.SuccessResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,7 @@ public class EmployeeController {
    * @return list of employee
    */
   @GetMapping("/")
-  public EmployeesReturnModel getAllEmployees() {
+  public SuccessResponseModel getAllEmployees() {
     return employeeService.getAllEmployees();
   }
 
