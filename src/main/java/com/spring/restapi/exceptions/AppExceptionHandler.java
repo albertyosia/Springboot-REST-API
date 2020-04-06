@@ -29,4 +29,17 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
+
+  @ExceptionHandler(value = {NameLengthException.class})
+  public final ResponseEntity<Object> handleNameLengthException(NameLengthException ex, WebRequest request) {
+    String errorMessageDescription = ex.getLocalizedMessage();
+    String errorMessage = RestStatus.MAX_NAME_LENGTH_VIOLATION.getMessage();
+    int errorCode = RestStatus.MAX_NAME_LENGTH_VIOLATION.getCode();
+    if (errorMessageDescription == null) {
+      errorMessageDescription = ex.toString();
+    }
+
+    ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
 }

@@ -2,8 +2,11 @@ package com.spring.restapi.module.employee;
 
 import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.manager.Manager;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +26,8 @@ public class Employee {
   private @Column(name = "employee_name") String employeeName;
   private @Column(name = "employee_email") String employeeEmail;
   private @Column(name = "employee_address") String employeeAddress;
-  private @OneToOne @JoinColumn(name = "department_id") Department department;
-  private @ManyToOne @JoinColumn(name = "manager_id") Manager manager;
+  private @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "department_id") Department department;
+  private @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "manager_id") Manager manager;
 
   /**
    * This is constructor.

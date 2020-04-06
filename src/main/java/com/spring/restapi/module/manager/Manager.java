@@ -4,8 +4,10 @@ import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.employee.Employee;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,9 +26,9 @@ import lombok.NoArgsConstructor;
 public class Manager {
   private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long managerId;
   private @Column(name = "branch_name") String branchName;
-  private @Column(name = "first_name") String firstName;
-  private @Column(name = "last_name") String lastName;
+  private @Column(name = "first_name") String managerFirstName;
+  private @Column(name = "last_name") String managerLastName;
   private @Column(name = "promotion_date") Date promotionDate;
-  private @OneToOne @JoinColumn(name = "department_id", referencedColumnName = "id") Department department;
+  private @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "department_id") Department department;
   private @OneToMany(mappedBy = "manager") List<Employee> employees;
 }

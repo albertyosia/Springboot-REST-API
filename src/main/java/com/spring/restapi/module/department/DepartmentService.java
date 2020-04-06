@@ -3,7 +3,7 @@ package com.spring.restapi.module.department;
 import com.spring.restapi.models.SuccessResponseModel;
 
 public interface DepartmentService {
-  SuccessResponseModel getAllDepartment();
+  DepartmentResponseModel getAllDepartment();
 
   Department addDepartment(Department department);
 

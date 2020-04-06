@@ -1,9 +1,8 @@
 package com.spring.restapi.module.manager;
 
-import com.spring.restapi.models.SuccessResponseModel;
 
 public interface ManagerService {
-  SuccessResponseModel getAllManager();
+  ManagerResponseModel getAllManager();
 
   Manager addManager(Manager manager);
 

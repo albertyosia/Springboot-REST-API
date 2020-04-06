@@ -1,7 +1,7 @@
 package com.spring.restapi;
 
 import com.spring.restapi.module.employee.Employee;
-import com.spring.restapi.models.SuccessResponseModel;
+import com.spring.restapi.module.employee.EmployeeResponseModel;
 import com.spring.restapi.module.employee.EmployeeService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -36,10 +36,10 @@ public class EmployeeControllerTest {
         employees.add(new Employee(1L,"albert", "albert@example","Jl.Aren"));
         employees.add(new Employee(2L,"alan", "alan@example","Jl.Bambu"));
 
-        SuccessResponseModel model = new SuccessResponseModel();
+        EmployeeResponseModel model = new EmployeeResponseModel();
         model.setCode(RestStatus.SUCCESS.getCode());
         model.setStatus(RestStatus.SUCCESS.getMessage());
-        model.setData(employees);
+        model.setEmployees(employees);
         when(employeeService.getAllEmployees()).thenReturn(model);
 
         Assert.assertEquals(2, employees.size());

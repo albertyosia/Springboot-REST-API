@@ -1,6 +1,5 @@
 package com.spring.restapi.module.employee;
 
-import com.spring.restapi.models.SuccessResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,7 @@ public class EmployeeController {
    * @return list of employee
    */
   @GetMapping("/")
-  public SuccessResponseModel getAllEmployees() {
+  public EmployeeResponseModel getAllEmployees() {
     return employeeService.getAllEmployees();
   }
 
@@ -31,7 +30,7 @@ public class EmployeeController {
    * @return employee object.
    */
   @PostMapping("/")
-  public Employee registerEmployee(@RequestBody Employee employee) {
+  public Employee addNewEmployee(@RequestBody Employee employee) {
     return employeeService.addEmployee(employee);
   }
 

@@ -1,9 +1,7 @@
 package com.spring.restapi.module.employee;
 
-import com.spring.restapi.models.SuccessResponseModel;
-
 public interface EmployeeService {
-  SuccessResponseModel getAllEmployees();
+  EmployeeResponseModel getAllEmployees();
 
   Employee addEmployee(Employee employee);
 

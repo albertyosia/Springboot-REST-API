@@ -2,7 +2,7 @@ package com.spring.restapi.module.employee;
 
 import com.spring.restapi.RestStatus;
 import com.spring.restapi.exceptions.UsernameNotFoundException;
-import com.spring.restapi.models.SuccessResponseModel;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,9 @@ public class EmployeeServiceImpl implements EmployeeService {
    * This method is used to return all employee from database.
    * @return list of employee.
    */
-  public SuccessResponseModel getAllEmployees() {
+  public EmployeeResponseModel getAllEmployees() {
     List<Employee> employees = employeeRepository.findAll();
-    SuccessResponseModel model = new SuccessResponseModel();
+    EmployeeResponseModel model = new EmployeeResponseModel();
     model.setCode(RestStatus.SUCCESS.getCode());
     model.setStatus(RestStatus.SUCCESS.getMessage());
     model.setEmployees(employees);
@@ -41,9 +41,6 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   @Transactional
   public Employee addEmployee(Employee newEmployee) {
-    if (MAX_NAME_LENGTH < newEmployee.getEmployeeName().length()) {
-      return null;
-    }
     return employeeRepository.saveAndFlush(newEmployee);
   }
 
@@ -56,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   @Transactional
   public Employee updateEmployee(Long id, Employee employee) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(id);
+    Optional<Employee> foundEmployee = employeeRepository.findOneByEmployeeId(id);
     if (foundEmployee.isEmpty()) {
       throw new UsernameNotFoundException("Employee with id " + id + " not found");
     }
@@ -79,7 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   @Transactional
   public void deleteEmployee(Long id) {
-    Optional<Employee> foundEmployee = employeeRepository.findOneById(id);
+    Optional<Employee> foundEmployee = employeeRepository.findOneByEmployeeId(id);
     if (foundEmployee.isEmpty()) {
       throw  new UsernameNotFoundException("Employee with id " + id + " not found");
     }
