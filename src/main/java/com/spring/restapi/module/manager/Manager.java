@@ -29,6 +29,6 @@ public class Manager {
   private @Column(name = "first_name") String managerFirstName;
   private @Column(name = "last_name") String managerLastName;
   private @Column(name = "promotion_date") Date promotionDate;
-  private @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "department_id") Department department;
-  private @OneToMany(mappedBy = "manager") List<Employee> employees;
+  private @OneToOne(targetEntity = Department.class, cascade = CascadeType.ALL) @JoinColumn(name = "department_id") Department department;
+  private @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) List<Employee> employees;
 }

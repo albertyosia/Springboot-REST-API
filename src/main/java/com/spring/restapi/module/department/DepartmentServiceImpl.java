@@ -2,7 +2,7 @@ package com.spring.restapi.module.department;
 
 import com.spring.restapi.RestStatus;
 import com.spring.restapi.exceptions.UsernameNotFoundException;
-import com.spring.restapi.models.SuccessResponseModel;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   @Override
   @Transactional
   public Department updateDepartment(Long id, Department department) {
-    Optional<Department> foundDepartment = departmentRepository.findOneByDepartmentId(id);
+    Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(id);
     if (foundDepartment.isEmpty()) {
       throw new UsernameNotFoundException("Department with id " + id + " not found");
     }
@@ -50,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   @Override
   @Transactional
   public void deleteDepartment(Long id) {
-    Optional<Department> foundDepartment = departmentRepository.findOneByDepartmentId(id);
+    Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(id);
     if (foundDepartment.isEmpty()) {
       throw new UsernameNotFoundException("Department with id " + id + " not found");
     }

@@ -1,6 +1,6 @@
 package com.spring.restapi.module.manager;
 
-import com.spring.restapi.models.SuccessResponseModel;
+import com.spring.restapi.models.GetResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class ManagerController {
   @Autowired ManagerService managerService;
 
   @GetMapping("/")
-  public SuccessResponseModel getAllManager() {
+  public GetResponseModel getAllManager() {
     return managerService.getAllManager();
   }
 

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SuccessResponseModel {
+public class GetResponseModel {
   private int code;
   private String status;
 }

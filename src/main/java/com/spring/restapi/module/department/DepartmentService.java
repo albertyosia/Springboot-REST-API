@@ -1,7 +1,5 @@
 package com.spring.restapi.module.department;
 
-import com.spring.restapi.models.SuccessResponseModel;
-
 public interface DepartmentService {
   DepartmentResponseModel getAllDepartment();
 

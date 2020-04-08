@@ -8,12 +8,15 @@ public enum RestStatus {
   MANAGER_NOT_FOUND(702, "Manager not found"),
   DEPARTMENT_NOT_FOUND(703, "Department not found"),
 
-  MAX_NAME_LENGTH_VIOLATION(801, "Name should not more than 10 character(s)"),
+  NAME_REQUIRED(706, "Name required"),
+  NAME_LENGTH_VIOLATION(707, "Name length violation"),
 
-  MAX_EMAIL_LENGTH_VIOLATION(802, "Email should not more than 15 character(s)"),
-  EMAIL_VIOLATION(803, "Email does not match pattern"),
+  EMAIL_REQUIRED(708, "Email required"),
+  EMAIL_LENGTH_VIOLATION(709, "Email length violation"),
+  EMAIL_PATTERN_VIOLATION(800, "Email does not match pattern"),
 
-  MAX_ADDRESS_LENGTH_VIOLATION(803, "Address should not more than 30 character(s)");
+  ADDRESS_REQUIRED(801, "Address required"),
+  ADDRESS_LENGTH_VIOLATION(802, "Address length violation");
 
   private int code;
 
