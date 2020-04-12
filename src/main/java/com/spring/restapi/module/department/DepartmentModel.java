@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DepartmentModel extends Department {
-   private @JsonIgnore Employee employee;
-   private @JsonIgnore Manager manager;
+  private @JsonIgnore Employee employee;
+  private @JsonIgnore Manager manager;
 }

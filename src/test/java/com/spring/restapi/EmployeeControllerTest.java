@@ -1,8 +1,11 @@
 package com.spring.restapi;
 
+import com.spring.restapi.exceptions.RestStatus;
+import com.spring.restapi.module.department.DepartmentService;
 import com.spring.restapi.module.employee.Employee;
 import com.spring.restapi.module.employee.EmployeeResponseModel;
 import com.spring.restapi.module.employee.EmployeeService;
+import com.spring.restapi.module.manager.ManagerService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +26,8 @@ public class EmployeeControllerTest {
     @Autowired MockMvc mockMvc;
 
     @MockBean private EmployeeService employeeService;
+    @MockBean private DepartmentService departmentService;
+    @MockBean private ManagerService managerService;
 
     private Employee generateEmployee(){
         Long id = 1L;
@@ -44,6 +49,7 @@ public class EmployeeControllerTest {
 
         Assert.assertEquals(2, employees.size());
     }
+
 
     @Test
     void testCreateNewEmployee()throws Exception {

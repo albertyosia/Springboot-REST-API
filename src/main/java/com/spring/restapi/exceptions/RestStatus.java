@@ -1,4 +1,4 @@
-package com.spring.restapi;
+package com.spring.restapi.exceptions;
 
 public enum RestStatus {
 

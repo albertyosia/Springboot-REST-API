@@ -3,8 +3,6 @@ package com.spring.restapi.module.department;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.spring.restapi.module.employee.Employee;
 import com.spring.restapi.module.manager.Manager;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +21,6 @@ import lombok.NoArgsConstructor;
 public class Department {
   private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long departmentId;
   private @Column (name = "department_name") String departmentName;
-  private @OneToOne(targetEntity = Employee.class, cascade = CascadeType.ALL) Employee employee;
-  private @OneToOne(targetEntity = Manager.class, cascade = CascadeType.ALL) Manager manager;
+  private @OneToOne Employee employee;
+  private @OneToOne Manager manager;
 }

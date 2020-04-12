@@ -1,8 +1,10 @@
 package com.spring.restapi.module.manager;
 
-import com.spring.restapi.RestStatus;
-import com.spring.restapi.exceptions.UsernameNotFoundException;
-
+import com.spring.restapi.exceptions.ManagerNotFoundException;
+import com.spring.restapi.exceptions.RestStatus;
+import com.spring.restapi.module.department.Department;
+import com.spring.restapi.module.department.DepartmentRepository;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import org.springframework.util.StringUtils;
 
 @Service("managerService")
 public class ManagerServiceImpl implements ManagerService {
-   private ManagerRepository managerRepository;
+  private ManagerRepository managerRepository;
+  private DepartmentRepository departmentRepository;
 
-  public ManagerServiceImpl(ManagerRepository managerRepository) {
+  public ManagerServiceImpl(ManagerRepository managerRepository, DepartmentRepository departmentRepository) {
     this.managerRepository = managerRepository;
+    this.departmentRepository = departmentRepository;
   }
 
   @Override
@@ -30,6 +34,12 @@ public class ManagerServiceImpl implements ManagerService {
   @Override
   @Transactional
   public Manager addManager(Manager manager) {
+    Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(manager.getDepartment().getDepartmentId());
+    if (foundDepartment.isEmpty()) {
+      throw new ManagerNotFoundException("Department not Found");
+    }
+    manager.setPromotionDate(new Date());
+    manager.setDepartment(foundDepartment.get());
     return managerRepository.saveAndFlush(manager);
   }
 
@@ -38,7 +48,7 @@ public class ManagerServiceImpl implements ManagerService {
   public Manager updateManager(Long id, Manager manager) {
     Optional<Manager> foundManager = managerRepository.findOneByManagerId(id);
     if (foundManager.isEmpty()) {
-      throw new UsernameNotFoundException("Manager with id " + id + " not found");
+      throw new ManagerNotFoundException("Manager with id " + id + " not found");
     }
     if (!StringUtils.isEmpty(manager.getManagerFirstName())) {
       foundManager.get().setManagerFirstName((manager.getManagerFirstName()));
@@ -60,7 +70,7 @@ public class ManagerServiceImpl implements ManagerService {
   public void deleteManager(Long id) {
     Optional<Manager> foundManager = managerRepository.findOneByManagerId(id);
     if (foundManager.isEmpty()) {
-      throw new UsernameNotFoundException("Manager with id " + id + " not found");
+      throw new ManagerNotFoundException("Manager with id " + id + " not found");
     }
     managerRepository.delete(foundManager.get());
   }

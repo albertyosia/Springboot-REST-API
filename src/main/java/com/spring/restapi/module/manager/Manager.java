@@ -4,7 +4,6 @@ import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.employee.Employee;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +28,7 @@ public class Manager {
   private @Column(name = "first_name") String managerFirstName;
   private @Column(name = "last_name") String managerLastName;
   private @Column(name = "promotion_date") Date promotionDate;
-  private @OneToOne(targetEntity = Department.class, cascade = CascadeType.ALL) @JoinColumn(name = "department_id") Department department;
-  private @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) List<Employee> employees;
+  private @OneToOne @JoinColumn(name = "department_id") Department department;
+  private @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager") List<Employee> employees;
+
 }

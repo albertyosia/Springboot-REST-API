@@ -1,5 +1,6 @@
 package com.spring.restapi.module.employee;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,37 @@ public class EmployeeController {
   }
 
   /**
+   * This method is used to return only five employees.
+   * @return list of five employee
+   */
+  @GetMapping("/get-five")
+  public List<Employee> getEmployees() {
+    return employeeService.getEmployees();
+  }
+
+  /**
+   * This method is used to return five employees ordered by employee name.
+   * @return list of five employee
+   */
+  @GetMapping("/order-by-name")
+  public List<Employee> getEmployeesOrderByName() {
+    return employeeService.getEmployeesOrderByName();
+  }
+
+  /**
+   * This method is used to return five employee sorted descending.
+   * @return
+   */
+  @GetMapping("/descending")
+  public List<Employee> getEmployeesDescending() {
+    return employeeService.getEmployeesSortByDescending();
+  }
+  /**
    * This method is used to add new employee to database.
    * @param employee This is employee from request.
    * @return employee object.
    */
+
   @PostMapping("/")
   public Employee addNewEmployee(@RequestBody Employee employee) {
     return employeeService.addEmployee(employee);

@@ -1,10 +1,9 @@
 package com.spring.restapi.module.employee;
 
 import com.spring.restapi.models.GetResponseModel;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor

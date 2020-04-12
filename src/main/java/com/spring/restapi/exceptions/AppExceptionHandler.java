@@ -1,6 +1,6 @@
 package com.spring.restapi.exceptions;
 
-import com.spring.restapi.RestStatus;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  /**
+   * This method is used to handle null name  exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {NullNameException.class})
   public final ResponseEntity<Object> handleNullNameException(NullNameException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -42,6 +48,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * This method is used to handle name length exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {NameLengthException.class})
   public final ResponseEntity<Object> handleNameLengthException(NameLengthException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -55,6 +67,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * This method is used to handle null email exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {NullEmailException.class})
   public final ResponseEntity<Object> handleNullEmailException(NullEmailException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -68,6 +86,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * This method is used to handle email length exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {EmailLengthException.class})
   public final ResponseEntity<Object> handleEmailLengthException(EmailLengthException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -81,6 +105,30 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * This method is used to handle email pattern exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
+  @ExceptionHandler(value = {EmailPatternException.class})
+  public final ResponseEntity<Object> handleEmailPatternException(EmailPatternException ex, WebRequest request) {
+    String errorMessageDescription = ex.getLocalizedMessage();
+    String errorMessage = RestStatus.EMAIL_PATTERN_VIOLATION.getMessage();
+    int errorCode = RestStatus.EMAIL_PATTERN_VIOLATION.getCode();
+    if (errorMessageDescription == null) {
+      errorMessageDescription = ex.toString();
+    }
+    ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  /**
+   * This method is used to handle null address exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {NullAddressException.class})
   public final ResponseEntity<Object> handleNullAddressException(NullAddressException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -94,6 +142,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * This method is used to handle address length exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
   @ExceptionHandler(value = {AddressLengthException.class})
   public final ResponseEntity<Object> handleAddressLengthException(AddressLengthException ex, WebRequest request) {
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -105,5 +159,41 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
+  /**
+   * This method is used to handle department not found exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
+  @ExceptionHandler(value = {DepartmentNotFoundException.class})
+  public final ResponseEntity<Object> handleDepartmentNotFoundException(DepartmentNotFoundException ex, WebRequest request) {
+    String errorMessageDescription = ex.getLocalizedMessage();
+    String errorMessage = RestStatus.DEPARTMENT_NOT_FOUND.getMessage();
+    int errorCode = RestStatus.DEPARTMENT_NOT_FOUND.getCode();
+    if (errorMessageDescription == null) {
+      errorMessageDescription = ex.toString();
+    }
+    ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  /**
+   * This method is used to handle manager not found exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
+  @ExceptionHandler(value = {ManagerNotFoundException.class})
+  public final ResponseEntity<Object> handleManagerNotFoundException(ManagerNotFoundException ex, WebRequest request) {
+    String errorMessageDescription = ex.getLocalizedMessage();
+    String errorMessage = RestStatus.MANAGER_NOT_FOUND.getMessage();
+    int errorCode = RestStatus.MANAGER_NOT_FOUND.getCode();
+    if (errorMessageDescription == null) {
+      errorMessageDescription = ex.toString();
+    }
+    ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

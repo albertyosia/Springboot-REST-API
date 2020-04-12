@@ -1,11 +1,9 @@
 package com.spring.restapi.module.department;
 
-import com.spring.restapi.RestStatus;
-import com.spring.restapi.exceptions.UsernameNotFoundException;
-
+import com.spring.restapi.exceptions.DepartmentNotFoundException;
+import com.spring.restapi.exceptions.RestStatus;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -39,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   public Department updateDepartment(Long id, Department department) {
     Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(id);
     if (foundDepartment.isEmpty()) {
-      throw new UsernameNotFoundException("Department with id " + id + " not found");
+      throw new DepartmentNotFoundException("Department with id " + id + " not found");
     }
     if (!StringUtils.isEmpty(department.getDepartmentName())) {
       foundDepartment.get().setDepartmentName(department.getDepartmentName());
@@ -52,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   public void deleteDepartment(Long id) {
     Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(id);
     if (foundDepartment.isEmpty()) {
-      throw new UsernameNotFoundException("Department with id " + id + " not found");
+      throw new DepartmentNotFoundException("Department with id " + id + " not found");
     }
     departmentRepository.delete(foundDepartment.get());
   }
