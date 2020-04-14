@@ -16,7 +16,10 @@ public enum RestStatus {
   EMAIL_PATTERN_VIOLATION(800, "Email does not match pattern"),
 
   ADDRESS_REQUIRED(801, "Address required"),
-  ADDRESS_LENGTH_VIOLATION(802, "Address length violation");
+  ADDRESS_LENGTH_VIOLATION(802, "Address length violation"),
+
+  ATTRIBUTE_CONTAIN_SCRIPT(803, "Attribute must not contain script");
+
 
   private int code;
 

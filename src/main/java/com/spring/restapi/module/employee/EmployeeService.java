@@ -1,15 +1,18 @@
 package com.spring.restapi.module.employee;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface EmployeeService {
   EmployeeResponseModel getAllEmployees();
 
-  List<Employee> getEmployees();
+  List<Employee> getFiveEmployee();
 
-  List<Employee> getEmployeesOrderByName();
+  List<Employee> getFiveEmployeeOrderByName();
 
-  List<Employee> getEmployeesSortByDescending();
+  List<Employee> getFiveEmployeeSortByDescending();
+
+  Page<Employee> getPageableEmployee(Integer page, Integer size);
 
   Employee addEmployee(Employee employee);
 

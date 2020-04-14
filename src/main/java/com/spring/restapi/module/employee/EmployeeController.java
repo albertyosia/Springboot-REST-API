@@ -2,6 +2,7 @@ package com.spring.restapi.module.employee;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,12 +28,23 @@ public class EmployeeController {
   }
 
   /**
+   * This method is used to return page with employee detail.
+   * @param page offset.
+   * @param size limit.
+   * @return page with employee detail.
+   */
+  @GetMapping("/page")
+  public Page<Employee> getPageableEmployee(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+    return employeeService.getPageableEmployee(page,size);
+  }
+
+  /**
    * This method is used to return only five employees.
    * @return list of five employee
    */
   @GetMapping("/get-five")
   public List<Employee> getEmployees() {
-    return employeeService.getEmployees();
+    return employeeService.getFiveEmployee();
   }
 
   /**
@@ -40,23 +53,23 @@ public class EmployeeController {
    */
   @GetMapping("/order-by-name")
   public List<Employee> getEmployeesOrderByName() {
-    return employeeService.getEmployeesOrderByName();
+    return employeeService.getFiveEmployeeOrderByName();
   }
 
   /**
    * This method is used to return five employee sorted descending.
-   * @return
+   * @return list of five employee sorted descending.
    */
   @GetMapping("/descending")
   public List<Employee> getEmployeesDescending() {
-    return employeeService.getEmployeesSortByDescending();
+    return employeeService.getFiveEmployeeSortByDescending();
   }
+
   /**
    * This method is used to add new employee to database.
    * @param employee This is employee from request.
    * @return employee object.
    */
-
   @PostMapping("/")
   public Employee addNewEmployee(@RequestBody Employee employee) {
     return employeeService.addEmployee(employee);

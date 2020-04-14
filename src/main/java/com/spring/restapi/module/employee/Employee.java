@@ -1,5 +1,6 @@
 package com.spring.restapi.module.employee;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.department.DepartmentModel;
 import com.spring.restapi.module.manager.Manager;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "employee")
 public class Employee {
   private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long employeeId;

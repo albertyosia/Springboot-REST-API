@@ -196,4 +196,22 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
     return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
+
+  /**
+   * This method is used to handle manager not found exception.
+   * @param ex This is exception.
+   * @param request from web.
+   * @return response entity.
+   */
+  @ExceptionHandler(value = {AttributeContainScriptException.class})
+  public final ResponseEntity<Object> handleAttributeContainScriptException(AttributeContainScriptException ex, WebRequest request) {
+    String errorMessageDescription = ex.getLocalizedMessage();
+    String errorMessage = RestStatus.ATTRIBUTE_CONTAIN_SCRIPT.getMessage();
+    int errorCode = RestStatus.ATTRIBUTE_CONTAIN_SCRIPT.getCode();
+    if (errorMessageDescription == null) {
+      errorMessageDescription = ex.toString();
+    }
+    ErrorMessage message = new ErrorMessage(errorCode, errorMessage, errorMessageDescription);
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }

@@ -46,10 +46,22 @@ public class EmployeeControllerTest {
         model.setStatus(RestStatus.SUCCESS.getMessage());
         model.setEmployees(employees);
         when(employeeService.getAllEmployees()).thenReturn(model);
-
         Assert.assertEquals(2, employees.size());
     }
 
+    @Test
+    void testGetFiveEmployee() throws Exception {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1L,"alpha", "A","Jl.Aren"));
+        employees.add(new Employee(2L,"zeta", "B","Jl.Bambu"));
+        employees.add(new Employee(3L,"gamma", "C","Jl.Aren"));
+        employees.add(new Employee(4L,"sigma", "D","Jl.Bambu"));
+        employees.add(new Employee(5L,"beta", "E","Jl.Aren"));
+        employees.add(new Employee(6L,"eta", "F","Jl.Aren"));
+        when(employeeService.getFiveEmployee()).thenReturn(employees.subList(0,5));
+
+        Assert.assertEquals(5, employees.subList(0,5).size());
+    }
 
     @Test
     void testCreateNewEmployee()throws Exception {
@@ -75,7 +87,6 @@ public class EmployeeControllerTest {
     @Test
     void testDeleteEmployee()throws Exception {
         Long idToDelete = 2L;
-
         employeeService.deleteEmployee(idToDelete);
         verify(employeeService, atLeast(1)).deleteEmployee(idToDelete);
     }
