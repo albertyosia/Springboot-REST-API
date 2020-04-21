@@ -22,13 +22,15 @@ public class DepartmentController {
   }
 
   @PostMapping("/")
-  public Department addNewDepartment(@RequestBody Department department) {
-    return departmentService.addDepartment(department);
+  public Department getGeneratedDepartment(@RequestBody Department department) {
+    return departmentService.getGeneratedDepartment(department);
   }
 
   @PutMapping("/{id}")
-  public Department updateDepartment(@PathVariable("id") Long id, @RequestBody Department department) {
-    return departmentService.updateDepartment(id, department);
+  public Department getUpdatedDepartment(
+      @PathVariable("id") Long id,
+      @RequestBody Department department) {
+    return departmentService.getUpdatedDepartment(id, department);
   }
 
   @DeleteMapping("/{id}")

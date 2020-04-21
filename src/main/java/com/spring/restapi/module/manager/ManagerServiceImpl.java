@@ -1,5 +1,6 @@
 package com.spring.restapi.module.manager;
 
+import com.spring.restapi.exceptions.DepartmentNotFoundException;
 import com.spring.restapi.exceptions.ManagerNotFoundException;
 import com.spring.restapi.exceptions.RestStatus;
 import com.spring.restapi.module.department.Department;
@@ -16,7 +17,9 @@ public class ManagerServiceImpl implements ManagerService {
   private ManagerRepository managerRepository;
   private DepartmentRepository departmentRepository;
 
-  public ManagerServiceImpl(ManagerRepository managerRepository, DepartmentRepository departmentRepository) {
+  public ManagerServiceImpl(
+      ManagerRepository managerRepository,
+      DepartmentRepository departmentRepository) {
     this.managerRepository = managerRepository;
     this.departmentRepository = departmentRepository;
   }
@@ -33,10 +36,16 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional
-  public Manager addManager(Manager manager) {
-    Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(manager.getDepartment().getDepartmentId());
+  public Manager getGeneratedManager(Manager manager) {
+    Long departmentId = manager.getDepartment().getDepartmentId();
+    Optional<Department> foundDepartment =
+        departmentRepository.findByDepartmentId(departmentId);
+
     if (foundDepartment.isEmpty()) {
-      throw new ManagerNotFoundException("Department not Found");
+      throw new DepartmentNotFoundException(
+        "Department with id "
+          + manager.getDepartment().getDepartmentId()
+          + " not Found");
     }
     manager.setPromotionDate(new Date());
     manager.setDepartment(foundDepartment.get());
@@ -45,7 +54,7 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional
-  public Manager updateManager(Long id, Manager manager) {
+  public Manager getUpdatedManager(Long id, Manager manager) {
     Optional<Manager> foundManager = managerRepository.findOneByManagerId(id);
     if (foundManager.isEmpty()) {
       throw new ManagerNotFoundException("Manager with id " + id + " not found");

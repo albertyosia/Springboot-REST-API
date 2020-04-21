@@ -12,11 +12,11 @@ public interface EmployeeService {
 
   List<Employee> getFiveEmployeeSortByDescending();
 
-  Page<Employee> getPageableEmployee(Integer page, Integer size);
+  Page<Employee> getPageableEmployee(int page, int size);
 
-  Employee addEmployee(Employee employee);
+  Employee getGeneratedEmployee(Employee employee);
 
-  Employee updateEmployee(Long id, Employee employee);
+  Employee getUpdatedEmployee(Long id, Employee employee);
 
   void deleteEmployee(Long id);
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
   @Autowired private EmployeeService employeeService;
 
@@ -33,8 +33,10 @@ public class EmployeeController {
    * @param size limit.
    * @return page with employee detail.
    */
-  @GetMapping("/page")
-  public Page<Employee> getPageableEmployee(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+  @GetMapping("/pageable")
+  public Page<Employee> getPageableEmployee(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size) {
     return employeeService.getPageableEmployee(page,size);
   }
 
@@ -42,8 +44,8 @@ public class EmployeeController {
    * This method is used to return only five employees.
    * @return list of five employee
    */
-  @GetMapping("/get-five")
-  public List<Employee> getEmployees() {
+  @GetMapping("/limit/5")
+  public List<Employee> getFiveEmployees() {
     return employeeService.getFiveEmployee();
   }
 
@@ -51,7 +53,7 @@ public class EmployeeController {
    * This method is used to return five employees ordered by employee name.
    * @return list of five employee
    */
-  @GetMapping("/order-by-name")
+  @GetMapping("/sort/name")
   public List<Employee> getEmployeesOrderByName() {
     return employeeService.getFiveEmployeeOrderByName();
   }
@@ -60,7 +62,7 @@ public class EmployeeController {
    * This method is used to return five employee sorted descending.
    * @return list of five employee sorted descending.
    */
-  @GetMapping("/descending")
+  @GetMapping("/sort/desc")
   public List<Employee> getEmployeesDescending() {
     return employeeService.getFiveEmployeeSortByDescending();
   }
@@ -71,8 +73,8 @@ public class EmployeeController {
    * @return employee object.
    */
   @PostMapping("/")
-  public Employee addNewEmployee(@RequestBody Employee employee) {
-    return employeeService.addEmployee(employee);
+  public Employee getGeneratedEmployee(@RequestBody Employee employee) {
+    return employeeService.getGeneratedEmployee(employee);
   }
 
   /**
@@ -82,9 +84,9 @@ public class EmployeeController {
    * @return return updated current employee object.
    */
   @PutMapping("/{id}")
-  public Employee updateEmployee(@PathVariable("id") Long id,
+  public Employee getUpdatedEmployee(@PathVariable("id") Long id,
                                  @RequestBody Employee employee) {
-    return employeeService.updateEmployee(id, employee);
+    return employeeService.getUpdatedEmployee(id, employee);
   }
 
   /**

@@ -43,14 +43,22 @@ public class Employee {
    * @param employeeEmail This is employee email.
    * @param employeeAddress This is employee address.
    */
-  public Employee(Long employeeId, String employeeName, String employeeEmail, String employeeAddress) {
+  public Employee(
+      Long employeeId,
+      String employeeName,
+      String employeeEmail,
+      String employeeAddress) {
     this.employeeId = employeeId;
     this.employeeName = employeeName;
     this.employeeEmail = employeeEmail;
     this.employeeAddress = employeeAddress;
   }
 
-  public Department getDepartment() {
+  /**
+   * This method is used to get Department model.
+   * @return department model.
+   */
+  public Department getDepartmentModel() {
     if (department != null) {
       DepartmentModel model = new DepartmentModel();
       model.setDepartmentName(department.getDepartmentName());
@@ -60,7 +68,11 @@ public class Employee {
     return null;
   }
 
-  public Manager getManager() {
+  /**
+   * This method is used to get Manager model.
+   * @return manager model.
+   */
+  public Manager getManagerModel() {
     if (manager != null) {
       ManagerModel model = new ManagerModel();
       model.setManagerId(manager.getManagerId());

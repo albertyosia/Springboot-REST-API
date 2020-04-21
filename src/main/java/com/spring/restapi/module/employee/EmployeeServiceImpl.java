@@ -1,12 +1,7 @@
 package com.spring.restapi.module.employee;
 
-import com.spring.restapi.exceptions.AddressLengthException;
-import com.spring.restapi.exceptions.AttributeContainScriptException;
 import com.spring.restapi.exceptions.DepartmentNotFoundException;
-import com.spring.restapi.exceptions.EmailLengthException;
-import com.spring.restapi.exceptions.EmailPatternException;
 import com.spring.restapi.exceptions.ManagerNotFoundException;
-import com.spring.restapi.exceptions.NameLengthException;
 import com.spring.restapi.exceptions.RestStatus;
 import com.spring.restapi.exceptions.UsernameNotFoundException;
 import com.spring.restapi.module.department.Department;
@@ -29,17 +24,24 @@ public class EmployeeServiceImpl implements EmployeeService {
   private EmployeeRepository employeeRepository;
   private DepartmentRepository departmentRepository;
   private ManagerRepository managerRepository;
+  private EmployeeUtil employeeUtil;
 
   /**
    * Constructor.
    * @param employeeRepository for access employee data.
    * @param departmentRepository for access department data.
    * @param managerRepository for access manager data.
+   * @param employeeUtil utilities.
    */
-  public EmployeeServiceImpl(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ManagerRepository managerRepository) {
+  public EmployeeServiceImpl(
+      EmployeeRepository employeeRepository,
+      DepartmentRepository departmentRepository,
+      ManagerRepository managerRepository,
+      EmployeeUtil employeeUtil) {
     this.employeeRepository = employeeRepository;
     this.departmentRepository = departmentRepository;
     this.managerRepository = managerRepository;
+    this.employeeUtil = employeeUtil;
   }
 
   @Override
@@ -53,9 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Page<Employee> getPageableEmployee(Integer page, Integer size) {
+  public Page<Employee> getPageableEmployee(int page, int size) {
     Pageable showData = PageRequest.of(page, size, Sort.by("employeeName").descending());
-    return employeeRepository.findTop3ByOrderByEmployeeNameDesc(showData);
+    return employeeRepository.findAll(showData);
   }
 
   @Override
@@ -73,79 +75,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employeeRepository.findTop5ByOrderByEmployeeNameDesc();
   }
 
-  public boolean validateEmail(String email) {
-    String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-    return email.matches(regex);
-  }
-
-  public boolean validateScript(String str) {
-    String regex = "[<script>]*(\\w)*[</script>]|[<html>]*(\\w)*[</html>]";
-    return str.matches(regex);
-  }
-
-  /**
-   * This method is used to validate attribute of Employee.
-   * @param employee Employee object.
-   * @return true.
-   */
-  public boolean validateAttribute(Employee employee) {
-    final int maxNameLength = 10;
-    final int maxEmailLength = 15;
-    final int maxAddressLength = 30;
-    int nameLength = employee.getEmployeeName().length();
-    if (maxNameLength < nameLength) {
-      throw new NameLengthException("Name cannot be more than 10 characters");
-    }
-
-    boolean validateName = validateScript(employee.getEmployeeName());
-    if (!validateName) {
-      throw new AttributeContainScriptException("Name must not contain script");
-    }
-
-    boolean validateEmail = validateScript(employee.getEmployeeEmail());
-    if (!validateEmail) {
-      throw new AttributeContainScriptException("Email must not contain script");
-    }
-
-    boolean validateAddress = validateScript(employee.getEmployeeAddress());
-    if (!validateAddress) {
-      throw new AttributeContainScriptException("Address must not contain script");
-    }
-
-    boolean resultEmailValidate = validateEmail(employee.getEmployeeEmail());
-    if (!resultEmailValidate) {
-      throw new EmailPatternException("Email pattern does not match");
-    }
-
-    int emailLength = employee.getEmployeeEmail().length();
-    if (maxEmailLength < emailLength) {
-      throw new EmailLengthException("Email cannot be more than 15 characters");
-    }
-
-    int addressLength = employee.getEmployeeAddress().length();
-    if (maxAddressLength < addressLength) {
-      throw new AddressLengthException("Address cannot be more than 30 characters");
-    }
-    return true;
-  }
-
   @Override
   @Transactional
-  public Employee addEmployee(Employee newEmployee) {
+  public Employee getGeneratedEmployee(Employee newEmployee) {
 
-    Long departmentId = newEmployee.getDepartment().getDepartmentId();
+    Long departmentId = newEmployee.getDepartmentModel().getDepartmentId();
     Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(departmentId);
     if (foundDepartment.isEmpty()) {
       throw new DepartmentNotFoundException("Department not found");
     }
 
-    Long managerId = newEmployee.getManager().getManagerId();
+    Long managerId = newEmployee.getManagerModel().getManagerId();
     Optional<Manager> foundManager = managerRepository.findOneByManagerId(managerId);
     if (foundManager.isEmpty()) {
       throw new ManagerNotFoundException("Manager not found");
     }
 
-    boolean resultValidateAttribute = validateAttribute(newEmployee);
+    boolean resultValidateAttribute = employeeUtil.validateAttribute(newEmployee);
     if (resultValidateAttribute) {
       newEmployee.setDepartment(foundDepartment.get());
       newEmployee.setManager(foundManager.get());
@@ -157,14 +103,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional
-  public Employee updateEmployee(Long id, Employee employee) {
+  public Employee getUpdatedEmployee(Long id, Employee employee) {
 
     Optional<Employee> foundEmployee = employeeRepository.findOneByEmployeeId(id);
     if (foundEmployee.isEmpty()) {
       throw new UsernameNotFoundException("Employee with id " + id + " not found");
     }
 
-    boolean result = validateAttribute(employee);
+    boolean result = employeeUtil.validateAttribute(employee);
 
     if (result) {
       if (!StringUtils.isEmpty(employee.getEmployeeName())) {

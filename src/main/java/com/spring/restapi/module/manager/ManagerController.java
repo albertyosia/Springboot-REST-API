@@ -22,13 +22,13 @@ public class ManagerController {
   }
 
   @PostMapping("/")
-  public Manager addNewManager(@RequestBody Manager manager) {
-    return managerService.addManager(manager);
+  public Manager getGeneratedManager(@RequestBody Manager manager) {
+    return managerService.getGeneratedManager(manager);
   }
 
   @PutMapping("/{id}")
-  public Manager updateManager(@PathVariable("id") Long id, @RequestBody Manager manager) {
-    return managerService.updateManager(id, manager);
+  public Manager getUpdatedManager(@PathVariable("id") Long id, @RequestBody Manager manager) {
+    return managerService.getUpdatedManager(id, manager);
   }
 
   @DeleteMapping("/{id}")

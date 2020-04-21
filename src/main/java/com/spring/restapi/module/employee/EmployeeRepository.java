@@ -9,7 +9,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long>, PagingAndSortingRepository<Employee, Long> {
+public interface EmployeeRepository extends
+    JpaRepository<Employee, Long>,
+    PagingAndSortingRepository<Employee, Long> {
+
   Optional<Employee> findOneByEmployeeId(Long id);
 
   List<Employee> findTop5By();
@@ -18,5 +21,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, Pagin
 
   List<Employee> findTop5ByOrderByEmployeeNameDesc();
 
-  Page<Employee> findTop3ByOrderByEmployeeNameDesc(Pageable pageable);
+  Page<Employee> findAllBy(Pageable pageable);
 }

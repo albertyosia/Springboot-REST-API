@@ -28,13 +28,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
   @Override
   @Transactional
-  public Department addDepartment(Department department) {
+  public Department getGeneratedDepartment(Department department) {
     return departmentRepository.saveAndFlush(department);
   }
 
   @Override
   @Transactional
-  public Department updateDepartment(Long id, Department department) {
+  public Department getUpdatedDepartment(Long id, Department department) {
     Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(id);
     if (foundDepartment.isEmpty()) {
       throw new DepartmentNotFoundException("Department with id " + id + " not found");

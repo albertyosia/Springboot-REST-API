@@ -46,7 +46,7 @@ public class EmployeeControllerTest {
         model.setStatus(RestStatus.SUCCESS.getMessage());
         model.setEmployees(employees);
         when(employeeService.getAllEmployees()).thenReturn(model);
-        Assert.assertEquals(2, employees.size());
+        Assert.assertEquals("Equal", 2, employees.size());
     }
 
     @Test
@@ -57,18 +57,51 @@ public class EmployeeControllerTest {
         employees.add(new Employee(3L,"gamma", "C","Jl.Aren"));
         employees.add(new Employee(4L,"sigma", "D","Jl.Bambu"));
         employees.add(new Employee(5L,"beta", "E","Jl.Aren"));
-        employees.add(new Employee(6L,"eta", "F","Jl.Aren"));
-        when(employeeService.getFiveEmployee()).thenReturn(employees.subList(0,5));
+        when(employeeService.getFiveEmployee()).thenReturn(employees);
 
-        Assert.assertEquals(5, employees.subList(0,5).size());
+        List<Employee> actualEmployee = employeeService.getFiveEmployee();
+
+        Assert.assertEquals(5, actualEmployee.size());
+    }
+
+    @Test
+    void testGetFiveEmployeeSortByDescending() throws Exception {
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(2L,"zeta", "B","Jl.Bambu"));
+        employees.add(new Employee(4L,"sigma", "D","Jl.Bambu"));
+        employees.add(new Employee(3L,"gamma", "C","Jl.Aren"));
+        employees.add(new Employee(5L,"beta", "E","Jl.Aren"));
+        employees.add(new Employee(1L,"alpha", "A","Jl.Aren"));
+        when(employeeService.getFiveEmployeeSortByDescending()).thenReturn(employees);
+
+        List<Employee> actualEmployee = employeeService.getFiveEmployeeSortByDescending();
+        int compareResult = actualEmployee.toString().compareTo(employees.toString());
+
+        Assert.assertEquals(0, compareResult);
+    }
+
+    @Test
+    void testGetFiveEmployeeOrderByEmployeeName() throws Exception {
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1L,"alpha", "A","Jl.Aren"));
+        employees.add(new Employee(5L,"beta", "E","Jl.Aren"));
+        employees.add(new Employee(3L,"gamma", "C","Jl.Aren"));
+        employees.add(new Employee(4L,"sigma", "D","Jl.Bambu"));
+        employees.add(new Employee(2L,"zeta", "B","Jl.Bambu"));
+        when(employeeService.getFiveEmployeeOrderByName()).thenReturn(employees);
+
+        List<Employee> actualEmployee = employeeService.getFiveEmployeeOrderByName();
+        int compareResult = actualEmployee.toString().compareTo(employees.toString());
+
+        Assert.assertEquals(0, compareResult);
     }
 
     @Test
     void testCreateNewEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
-        when(employeeService.addEmployee(expectedEmployee)).thenReturn(expectedEmployee);
+        when(employeeService.getGeneratedEmployee(expectedEmployee)).thenReturn(expectedEmployee);
 
-        Employee actualEmployee = employeeService.addEmployee(expectedEmployee);
+        Employee actualEmployee = employeeService.getGeneratedEmployee(expectedEmployee);
 
         Assert.assertEquals(expectedEmployee, actualEmployee);
     }
@@ -77,9 +110,9 @@ public class EmployeeControllerTest {
     void testUpdateEmployee()throws Exception {
         Employee expectedEmployee = generateEmployee();
         Long idToUpdate = 2L;
-        when(employeeService.updateEmployee(idToUpdate, expectedEmployee)).thenReturn(expectedEmployee);
+        when(employeeService.getUpdatedEmployee(idToUpdate, expectedEmployee)).thenReturn(expectedEmployee);
 
-        Employee actualEmployee = employeeService.updateEmployee(idToUpdate, expectedEmployee);
+        Employee actualEmployee = employeeService.getUpdatedEmployee(idToUpdate, expectedEmployee);
 
         Assert.assertEquals(expectedEmployee.getEmployeeName(), actualEmployee.getEmployeeName());
     }
