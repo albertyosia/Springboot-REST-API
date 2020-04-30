@@ -1,5 +1,6 @@
 package com.spring.restapi.security;
 
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,32 +11,32 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
-public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
-  @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.csrf().disable()
-      .authorizeRequests().anyRequest().authenticated()
-      .and().httpBasic();
-  }
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+  @Autowired DataSource dataSource;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
-  /**
-   * this method is used to create memory user authentication details.
-   * @param authentication for authentication details.
-   * @throws Exception .
-   */
   @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder authentication)
-      throws Exception {
-    authentication.inMemoryAuthentication()
-        .withUser("admin")
-        .password(passwordEncoder().encode("admin"))
-        .authorities("USER");
+  protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.jdbcAuthentication()
+        .dataSource(dataSource)
+        .usersByUsernameQuery("select username,password,enabled,roles "
+          + "from users "
+          + "where username = ?");
+  }
+
+  @Override
+  protected void configure(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity.authorizeRequests()
+            .antMatchers("/**").hasRole("USER")
+            .anyRequest()
+            .authenticated();
   }
 }

@@ -30,5 +30,4 @@ public class Manager {
   private @Column(name = "promotion_date") Date promotionDate;
   private @OneToOne @JoinColumn(name = "department_id") Department department;
   private @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager") List<Employee> employees;
-
 }
