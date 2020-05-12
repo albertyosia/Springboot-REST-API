@@ -9,17 +9,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Autowired DataSource dataSource;
+  private DataSource dataSource;
+
+  public SecurityConfiguration(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
+  public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
@@ -27,16 +30,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.jdbcAuthentication()
         .dataSource(dataSource)
-        .usersByUsernameQuery("select username,password,enabled,roles "
-          + "from users "
-          + "where username = ?");
+        .usersByUsernameQuery(
+          "select username,password,enabled from users where username = ?")
+        .authoritiesByUsernameQuery(
+          "select username,authority from roles where username = ?");
   }
 
   @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.authorizeRequests()
-            .antMatchers("/**").hasRole("USER")
-            .anyRequest()
-            .authenticated();
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+      .authorizeRequests()
+      .antMatchers("/roles/").hasRole("ADMIN")
+      .antMatchers("/departments/").hasRole("ADMIN")
+      .antMatchers("/users/").hasRole("USER")
+      .antMatchers("/managers/").hasRole("USER")
+      .anyRequest()
+      .authenticated()
+      .and().formLogin();
   }
 }

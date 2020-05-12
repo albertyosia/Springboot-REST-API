@@ -1,9 +1,11 @@
 package com.spring.restapi.module.user;
 
+import com.spring.restapi.exceptions.RoleNotFoundException;
 import com.spring.restapi.exceptions.UsernameNotFoundException;
+import com.spring.restapi.module.role.Role;
+import com.spring.restapi.module.role.RoleRepository;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-  @Autowired private UserRepository userRepository;
-  private BCryptPasswordEncoder encoder;
+  private UserRepository userRepository;
+  private RoleRepository roleRepository;
+  BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+  public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
+  }
 
   @Override
   public List<User> getAllUser() {
@@ -23,6 +30,11 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public User getGeneratedUser(User user) {
+    Optional<Role> foundRole = roleRepository.findOneById(user.getRole().getId());
+    if (foundRole.isEmpty()) {
+      throw new RoleNotFoundException("Role with id " + user.getRole().getId() + " NOT FOUND");
+    }
+    user.setRole(foundRole.get());
     user.setPassword(encoder.encode(user.getPassword()));
     user.setEnabled(true);
     return userRepository.saveAndFlush(user);

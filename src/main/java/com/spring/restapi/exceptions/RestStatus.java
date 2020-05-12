@@ -7,6 +7,7 @@ public enum RestStatus {
   EMPLOYEE_NOT_FOUND(701, "Employee not found"),
   MANAGER_NOT_FOUND(702, "Manager not found"),
   DEPARTMENT_NOT_FOUND(703, "Department not found"),
+  ROLE_NOT_FOUND(704, "Role not found"),
 
   NAME_REQUIRED(706, "Name required"),
   NAME_LENGTH_VIOLATION(707, "Name length violation"),

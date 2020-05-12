@@ -79,13 +79,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Transactional
   public Employee getGeneratedEmployee(Employee newEmployee) {
 
-    Long departmentId = newEmployee.getDepartmentModel().getDepartmentId();
+    Long departmentId = newEmployee.getDepartment().getDepartmentId();
     Optional<Department> foundDepartment = departmentRepository.findByDepartmentId(departmentId);
     if (foundDepartment.isEmpty()) {
       throw new DepartmentNotFoundException("Department not found");
     }
 
-    Long managerId = newEmployee.getManagerModel().getManagerId();
+    Long managerId = newEmployee.getManager().getManagerId();
     Optional<Manager> foundManager = managerRepository.findOneByManagerId(managerId);
     if (foundManager.isEmpty()) {
       throw new ManagerNotFoundException("Manager not found");
