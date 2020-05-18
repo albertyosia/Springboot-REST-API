@@ -1,8 +1,6 @@
 package com.spring.restapi.module.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.restapi.module.role.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,5 +23,7 @@ public class User {
   private @Column(name = "username") String username;
   private @Column(name = "password") String password;
   private @Column(name = "enabled") boolean enabled;
-  private @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "fk_role") @JsonBackReference Role role;
+  private @ManyToOne(fetch = FetchType.LAZY)
+      @JoinColumn(name = "fk_role")
+      @JsonBackReference Role role;
 }

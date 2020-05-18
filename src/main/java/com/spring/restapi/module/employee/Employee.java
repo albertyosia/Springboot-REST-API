@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.manager.Manager;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +28,9 @@ public class Employee {
   private @Column(name = "employee_email") String employeeEmail;
   private @Column(name = "employee_address") String employeeAddress;
   private @OneToOne @JoinColumn(name = "department_id") Department department;
-  private @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "fk_manager") @JsonBackReference Manager manager;
+  private @ManyToOne(fetch = FetchType.LAZY)
+      @JoinColumn(name = "fk_manager")
+      @JsonBackReference Manager manager;
 
   /**
    * This is constructor.
