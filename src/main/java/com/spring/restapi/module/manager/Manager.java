@@ -1,12 +1,14 @@
 package com.spring.restapi.module.manager;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.restapi.module.department.Department;
 import com.spring.restapi.module.employee.Employee;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +31,6 @@ public class Manager {
   private @Column(name = "last_name") String managerLastName;
   private @Column(name = "promotion_date") Date promotionDate;
   private @OneToOne @JoinColumn(name = "department_id") Department department;
-  private @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager") List<Employee> employees;
+  private @OneToMany(mappedBy = "manager") @JsonManagedReference List<Employee> employees = new ArrayList<>();
 
 }
