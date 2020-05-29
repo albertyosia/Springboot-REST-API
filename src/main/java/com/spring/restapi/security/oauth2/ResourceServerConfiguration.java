@@ -1,20 +1,19 @@
 package com.spring.restapi.security.oauth2;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
+@Configuration
+@EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
   @Override
-  public void configure(HttpSecurity http) throws Exception {
-    http
+  public void configure(HttpSecurity security) throws Exception {
+    security
         .authorizeRequests()
-        .antMatchers("/departments/").hasRole("ADMIN")
-        .antMatchers("/users/").hasRole("USER")
-        .antMatchers("/managers/").hasRole("USER")
-        .anyRequest()
-        .authenticated()
-        .and()
-        .formLogin();
+        .antMatchers("/users/").hasRole("ADMIN")
+        .antMatchers("/departments/").hasRole("USER");
   }
 }
