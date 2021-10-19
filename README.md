@@ -1,3 +1,3 @@
-# assignment-rest-api
+# REST-API-Test
 Internship assignment.
-Build REST API from scratch using Springboot.
+Create REST API using Springboot.
